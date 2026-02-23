@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>saaspocalypse.tech</title>
+    <title>saaspocalypse.tech // system failure</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg: #050505;
+            --text-main: #e0e0e0;
+            --accent-pink: #ff3366;
+            --accent-cyan: #00f3ff;
+            --panel-bg: rgba(15, 15, 20, 0.85);
+            --border-color: #333;
+        }
 
         * {
             box-sizing: border-box;
@@ -14,140 +23,223 @@
         }
 
         body {
-            background-color: #0a0a0a;
-            color: #e0e0e0;
+            background-color: var(--bg);
+            color: var(--text-main);
             font-family: 'Space Mono', monospace;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
+            padding: 2rem;
         }
 
-        .scanlines {
+        /* Sophisticated CRT / Scanline Effects */
+        body::before {
+            content: " ";
+            display: block;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.2) 50%,
-                rgba(0,0,0,0.2)
-            );
-            background-size: 100% 4px;
-            z-index: 10;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
 
-        .container {
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            height: 85vh;
             position: relative;
-            z-index: 20;
-            max-width: 650px;
-            padding: 2rem;
-            text-align: left;
+            z-index: 10;
+        }
+
+        /* Main Content Styling */
+        .manifesto-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-pink);
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
+            position: relative;
         }
 
         h1 {
-            font-size: clamp(2rem, 5vw, 4rem);
-            color: #ff3366;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: var(--text-main);
             text-transform: uppercase;
             letter-spacing: -2px;
             margin-bottom: 0.5rem;
-            text-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+            text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan);
+            animation: glitch 3s infinite alternate;
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: #888;
+            font-size: 1rem;
+            color: var(--accent-cyan);
             margin-bottom: 3rem;
             text-transform: lowercase;
-        }
-
-        .content-box {
-            background: rgba(20, 20, 20, 0.8);
-            padding: 2rem;
-            border-left: 4px solid #ff3366;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            line-height: 1.8;
-            font-size: 1.05rem;
-            color: #cccccc;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 1rem;
         }
 
         p {
-            margin-bottom: 1.5rem;
-        }
-
-        p:last-child {
-            margin-bottom: 0;
+            margin-bottom: 1.8rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #b0b0b0;
         }
 
         strong {
-            color: #ff3366;
+            color: var(--accent-pink);
             font-weight: 700;
+        }
+
+        .dynamic-text {
+            color: var(--accent-cyan);
+            text-decoration: underline;
+            text-decoration-style: dotted;
         }
 
         .cursor {
             display: inline-block;
-            width: 10px;
+            width: 12px;
             height: 1.2rem;
-            background-color: #ff3366;
+            background-color: var(--accent-pink);
             vertical-align: middle;
             animation: blink 1s step-end infinite;
             box-shadow: 0 0 10px rgba(255, 51, 102, 0.6);
         }
 
+        /* Unhinged Chat Sidebar */
+        .chat-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--accent-cyan);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .chat-header {
+            padding: 1rem;
+            background: #111;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chat-header span {
+            color: var(--accent-cyan);
+        }
+
+        .chat-window {
+            flex-grow: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Custom Scrollbar for chat */
+        .chat-window::-webkit-scrollbar { width: 6px; }
+        .chat-window::-webkit-scrollbar-track { background: var(--bg); }
+        .chat-window::-webkit-scrollbar-thumb { background: var(--border-color); }
+
+        .chat-msg {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            padding: 0.8rem;
+            border-radius: 4px;
+            background: #1a1a1a;
+            border-left: 2px solid #555;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideIn 0.3s forwards;
+        }
+
+        .chat-msg.ai { border-left-color: var(--accent-cyan); }
+        .chat-msg.system { border-left-color: var(--accent-pink); }
+        .chat-msg.jira { border-left-color: #ff9900; }
+
+        .chat-msg .sender {
+            font-size: 0.7rem;
+            margin-bottom: 0.3rem;
+            opacity: 0.7;
+            display: block;
+        }
+
+        /* Animations */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
 
-        @media (max-width: 600px) {
-            .container { padding: 1.5rem; }
-            .content-box { padding: 1.5rem; font-size: 0.95rem; }
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan); }
+            5% { text-shadow: -2px 0 var(--accent-pink), 2px 0 var(--accent-cyan); }
+            10% { text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan); }
+            100% { text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan); }
+        }
+
+        @media (max-width: 900px) {
+            .layout-grid { grid-template-columns: 1fr; height: auto; }
+            body { overflow-y: auto; height: auto; }
+            .manifesto-panel { margin-bottom: 2rem; }
+            .chat-window { min-height: 300px; }
         }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
-    
-    <div class="container">
-        <h1>Saaspocalypse</h1>
-        <div class="subtitle">// the end is extremely loud and incredibly web-based.</div>
-        
-        <div class="content-box">
+    <div class="layout-grid">
+        <main class="manifesto-panel">
+            <h1>Saaspocalypse</h1>
+            <div class="subtitle">// status: degraded performance // epoch: <span id="clock"></span></div>
+            
             <p>My name is <strong id="dev-name">Anonymous</strong>. I am a <strong id="dev-title">Software</strong> engineer.</p>
             
             <p>And let me tell you: our work is profoundly, hilariously doomed.</p>
 
-            <p>I used to write artisanal, farm-to-table code. Now I spend 80% of my day reviewing Pull Requests generated by an AI that apologizes too much, and the other 20% trying to remember why we needed a hyper-scalable microservice for a "Contact Us" form.</p>
+            <p>I used to write <span class="dynamic-text" id="dyn-past">artisanal, farm-to-table code</span>. Now I spend 80% of my day reviewing Pull Requests generated by <span class="dynamic-text" id="dyn-present">an AI that apologizes too much</span>, and the other 20% trying to remember why we needed a hyper-scalable microservice for <span class="dynamic-text" id="dyn-future">a "Contact Us" form</span>.</p>
             
             <p>The SaaS bubble didn't just pop; it evaporated. The infinite VC funding dried up, the ping-pong tables were repossessed, and we realized we spent a decade building software to optimize the software that manages the software. The snake has officially eaten its own tail.</p>
             
             <p>I bought this domain because the golden age is over. And honestly?</p>
             
             <p>I have absolutely no idea what I'm going to do when I get older<span class="cursor"></span></p>
-        </div>
+        </main>
+
+        <aside class="chat-panel">
+            <div class="chat-header">
+                <div>WORKSPACE_COMMS</div>
+                <span>● LIVE</span>
+            </div>
+            <div class="chat-window" id="chat-window">
+                </div>
+        </aside>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if there's a base64 string after the # in the URL
+            // --- 1. Base64 URL Parsing ---
             const hash = window.location.hash.substring(1);
-            
             if (hash) {
                 try {
-                    // Decode the Base64 string
                     const decodedStr = atob(hash);
-                    
-                    // Expecting format: "Name,Title" (e.g., "Jared,Frontend")
                     const parts = decodedStr.split(',');
-                    
                     if (parts.length >= 2) {
-                        // Use textContent to prevent XSS injection
                         document.getElementById('dev-name').textContent = parts[0].trim();
                         document.getElementById('dev-title').textContent = parts[1].trim();
                     }
@@ -155,6 +247,70 @@
                     console.error("Failed to decode the existential dread from the URL.");
                 }
             }
+
+            // --- 2. Dynamic Text Randomizer ---
+            const pastTech = [
+                "artisanal, farm-to-table code", 
+                "hand-rolled Webpack configurations", 
+                "bespoke jQuery plugins", 
+                "monolithic PHP scripts",
+                "pixel-perfect CSS floats"
+            ];
+            const presentTech = [
+                "an AI that apologizes too much", 
+                "a YAML file that became sentient", 
+                "14 nested Docker containers", 
+                "a micro-frontend architecture built on lies",
+                "a blockchain trained on my own tears"
+            ];
+            const futureTech = [
+                "a 'Contact Us' form", 
+                "a digital twin of a water cooler", 
+                "an app that disrupts blinking", 
+                "a B2B SaaS for dog walkers",
+                "a serverless lambda that just returns 'true'"
+            ];
+
+            const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            
+            document.getElementById('dyn-past').textContent = randomItem(pastTech);
+            document.getElementById('dyn-present').textContent = randomItem(presentTech);
+            document.getElementById('dyn-future').textContent = randomItem(futureTech);
+
+            // --- 3. Unhinged Chat Bot ---
+            const chatWindow = document.getElementById('chat-window');
+            const chatMessages = [
+                { type: 'ai', sender: 'AI_CODER_PRO', text: "I apologize, but as an AI, I cannot fix your life choices. Shall I generate a unit test instead?" },
+                { type: 'system', sender: 'CI/CD PIPELINE', text: "Deploying to production... Just kidding. Build failed. Reason: Unknown." },
+                { type: 'jira', sender: 'JIRA_BOT', text: "You have 4,092 unresolved issues in epic 'Make It Pop'." },
+                { type: 'ai', sender: 'AI_CODER_PRO', text: "Have you considered rewriting this entire codebase in Rust?" },
+                { type: 'system', sender: 'DEV_SEC_OPS', text: "CRITICAL: High severity vulnerability found in left-pad (v0.0.1)." },
+                { type: 'ai', sender: 'AI_CODER_PRO', text: "Generating another microservice to handle the payload of the previous microservices..." },
+                { type: 'system', sender: 'SLACK_INTEGRATION', text: "@here Can anyone tell me why the staging environment is literally on fire?" },
+                { type: 'system', sender: 'RUNTIME', text: "Uncaught TypeError: undefined is not a function. Much like your career trajectory." },
+                { type: 'jira', sender: 'PM_BOT', text: "Status update requested: Are we Agile enough yet?" }
+            ];
+
+            function addChatMessage() {
+                const msgData = randomItem(chatMessages);
+                const msgEl = document.createElement('div');
+                msgEl.className = `chat-msg ${msgData.type}`;
+                msgEl.innerHTML = `<span class="sender">${msgData.sender}</span>${msgData.text}`;
+                
+                chatWindow.appendChild(msgEl);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                // Randomize the next message time between 2 to 6 seconds
+                setTimeout(addChatMessage, Math.random() * 4000 + 2000);
+            }
+            
+            // Start the chat after a brief delay
+            setTimeout(addChatMessage, 1500);
+
+            // --- 4. Epoch Clock Update ---
+            setInterval(() => {
+                document.getElementById('clock').textContent = Math.floor(Date.now() / 1000);
+            }, 1000);
         });
     </script>
 </body>
