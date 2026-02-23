@@ -3,315 +3,1570 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>saaspocalypse.tech // system failure</title>
+    <title>Recipe Hub - Share, Chat & Discover</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
         :root {
-            --bg: #050505;
-            --text-main: #e0e0e0;
-            --accent-pink: #ff3366;
-            --accent-cyan: #00f3ff;
-            --panel-bg: rgba(15, 15, 20, 0.85);
-            --border-color: #333;
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffd93d;
+            --purple: #a29bfe;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-light: #f0f2f5;
+            --border-radius: 12px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.12);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Space Mono', monospace;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            text-align: center;
+            padding: 30px 0;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .site-header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, var(--primary-color), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .site-header p {
+            color: var(--text-light);
+            font-size: 1.1em;
+        }
+
+        /* ===== NAV TABS ===== */
+        .nav-tabs {
             display: flex;
             justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .nav-tab {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
-            padding: 2rem;
+            gap: 8px;
         }
 
-        /* Sophisticated CRT / Scanline Effects */
-        body::before {
-            content: " ";
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), #ff8e8e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab:not(.active) {
+            background: white;
+            color: var(--text-dark);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .nav-tab:not(.active):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .tab-icon {
+            font-size: 1.2em;
+        }
+
+        /* ===== PANELS ===== */
+        .panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .panel.active {
             display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
         }
 
-        .layout-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 2rem;
+        /* ===== RECIPE FORM ===== */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .container h2 {
+            text-align: center;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
             width: 100%;
-            max-width: 1200px;
-            height: 85vh;
+            padding: 12px 16px;
+            border: 2px solid #eee;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255,107,107,0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .image-upload-container {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
             position: relative;
-            z-index: 10;
+            background: #fafafa;
+            transition: all 0.3s;
         }
 
-        /* Main Content Styling */
-        .manifesto-panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent-pink);
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            overflow-y: auto;
-            position: relative;
+        .image-upload-container:hover {
+            border-color: var(--primary-color);
+            background: #fff5f5;
         }
 
-        h1 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan);
-            animation: glitch 3s infinite alternate;
+        .image-upload-container input {
+            display: none;
         }
 
-        .subtitle {
-            font-size: 1rem;
-            color: var(--accent-cyan);
-            margin-bottom: 3rem;
-            text-transform: lowercase;
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 1rem;
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
         }
 
-        p {
-            margin-bottom: 1.8rem;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            color: #b0b0b0;
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            display: none;
+            object-fit: cover;
         }
 
-        strong {
-            color: var(--accent-pink);
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .list-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .list-item input, .list-item textarea {
+            flex-grow: 1;
+        }
+
+        .btn-remove {
+            background: none;
+            border: 2px solid #ff4757;
+            color: #ff4757;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-remove:hover {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-add {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), #ff8e8e);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 18px;
             font-weight: 700;
+            font-family: inherit;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 30px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
         }
 
-        .dynamic-text {
-            color: var(--accent-cyan);
-            text-decoration: underline;
-            text-decoration-style: dotted;
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.5);
         }
 
-        .cursor {
-            display: inline-block;
-            width: 12px;
-            height: 1.2rem;
-            background-color: var(--accent-pink);
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-            box-shadow: 0 0 10px rgba(255, 51, 102, 0.6);
-        }
-
-        /* Unhinged Chat Sidebar */
-        .chat-panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-top: 4px solid var(--accent-cyan);
+        /* ===== CHAT PANEL ===== */
+        .chat-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            height: 600px;
         }
 
         .chat-header {
-            padding: 1rem;
-            background: #111;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-            color: #888;
+            background: linear-gradient(135deg, var(--secondary-color), #45b7aa);
+            color: white;
+            padding: 20px 24px;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }
 
-        .chat-header span {
-            color: var(--accent-cyan);
+        .chef-avatar {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
         }
 
-        .chat-window {
-            flex-grow: 1;
-            padding: 1.5rem;
+        .chef-info h3 {
+            font-size: 1.1em;
+            margin-bottom: 2px;
+        }
+
+        .chef-info span {
+            font-size: 0.85em;
+            opacity: 0.85;
+        }
+
+        .chat-messages {
+            flex: 1;
             overflow-y: auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 16px;
+            background: #f8f9fa;
         }
 
-        /* Custom Scrollbar for chat */
-        .chat-window::-webkit-scrollbar { width: 6px; }
-        .chat-window::-webkit-scrollbar-track { background: var(--bg); }
-        .chat-window::-webkit-scrollbar-thumb { background: var(--border-color); }
-
-        .chat-msg {
-            font-size: 0.85rem;
-            line-height: 1.4;
-            padding: 0.8rem;
-            border-radius: 4px;
-            background: #1a1a1a;
-            border-left: 2px solid #555;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: slideIn 0.3s forwards;
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 14px;
+            animation: messageIn 0.3s ease;
         }
 
-        .chat-msg.ai { border-left-color: var(--accent-cyan); }
-        .chat-msg.system { border-left-color: var(--accent-pink); }
-        .chat-msg.jira { border-left-color: #ff9900; }
-
-        .chat-msg .sender {
-            font-size: 0.7rem;
-            margin-bottom: 0.3rem;
-            opacity: 0.7;
-            display: block;
+        .message.bot {
+            align-self: flex-start;
+            background: white;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        /* Animations */
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--secondary-color), #45b7aa);
+            color: white;
+            border-bottom-right-radius: 4px;
         }
 
-        @keyframes slideIn {
+        .message.bot .msg-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .chat-quick-actions {
+            padding: 12px 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .quick-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--secondary-color);
+            background: white;
+            color: var(--secondary-color);
+            border-radius: 50px;
+            font-size: 13px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-btn:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .chat-input-area {
+            padding: 16px 20px;
+            display: flex;
+            gap: 10px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #eee;
+            border-radius: 50px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border 0.3s;
+        }
+
+        .chat-input-area input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--secondary-color), #45b7aa);
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 18px;
+            align-self: flex-start;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        /* ===== PROFESSION PANEL ===== */
+        .profession-container {
+            max-width: 650px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .profession-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 50px 40px;
+            margin-bottom: 24px;
+        }
+
+        .crystal-ball {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .profession-card h2 {
+            font-size: 1.8em;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--purple), #6c5ce7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profession-card p {
+            color: var(--text-light);
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .profession-input-group {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        .profession-input-group input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #eee;
+            border-radius: 50px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .profession-input-group input:focus {
+            border-color: var(--purple);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(162,155,254,0.15);
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, var(--purple), #6c5ce7);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(162,155,254,0.4);
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(162,155,254,0.5);
+        }
+
+        .profession-result {
+            display: none;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            animation: resultReveal 0.8s ease;
+        }
+
+        .result-emoji {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .result-title {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .result-description {
+            color: var(--text-light);
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--purple);
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: var(--text-light);
+        }
+
+        .btn-retry {
+            margin-top: 24px;
+            background: none;
+            border: 2px solid var(--purple);
+            color: var(--purple);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-retry:hover {
+            background: var(--purple);
+            color: white;
+        }
+
+        /* ===== SHARE PANEL ===== */
+        .share-container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .share-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .share-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .share-card h2 {
+            font-size: 1.8em;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-color), #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .share-card > p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .share-form-group {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .share-form-group label {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .share-form-group input,
+        .share-form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #eee;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .share-form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .share-form-group input:focus,
+        .share-form-group textarea:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255,217,61,0.15);
+        }
+
+        .btn-generate-link {
+            background: linear-gradient(135deg, var(--accent-color), #f39c12);
+            color: var(--text-dark);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,217,61,0.4);
+            margin-top: 10px;
+        }
+
+        .btn-generate-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,217,61,0.5);
+        }
+
+        .share-result {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .link-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .link-box input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #eee;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-family: monospace;
+            background: #f8f9fa;
+            color: var(--text-dark);
+        }
+
+        .btn-copy {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+
+        .btn-copy.copied {
+            background: #27ae60;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.telegram { background: #0088cc; }
+        .share-btn.email { background: #EA4335; }
+        .share-btn.twitter { background: #1DA1F2; }
+
+        /* ===== SHARED RECIPE VIEW ===== */
+        .shared-recipe-view {
+            display: none;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .shared-recipe-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .shared-recipe-hero {
+            background: linear-gradient(135deg, var(--primary-color), #ff8e8e);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .shared-recipe-hero h2 {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .shared-recipe-hero p {
+            opacity: 0.9;
+        }
+
+        .shared-recipe-body {
+            padding: 30px 40px;
+        }
+
+        .shared-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .shared-meta-item {
+            text-align: center;
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+        }
+
+        .shared-meta-item .value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .shared-meta-item .label {
+            font-size: 0.8em;
+            color: var(--text-light);
+        }
+
+        .shared-section h3 {
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .shared-section {
+            margin-bottom: 24px;
+        }
+
+        .shared-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .shared-section li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .shared-section li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+        }
+
+        .shared-section ol {
+            padding-left: 20px;
+        }
+
+        .shared-section ol li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-left: 8px;
+        }
+
+        .shared-section ol li::before {
+            display: none;
+        }
+
+        .shared-from {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes glitch {
-            0% { text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan); }
-            5% { text-shadow: -2px 0 var(--accent-pink), 2px 0 var(--accent-cyan); }
-            10% { text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan); }
-            100% { text-shadow: 2px 0 var(--accent-pink), -2px 0 var(--accent-cyan); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 900px) {
-            .layout-grid { grid-template-columns: 1fr; height: auto; }
-            body { overflow-y: auto; height: auto; }
-            .manifesto-panel { margin-bottom: 2rem; }
-            .chat-window { min-height: 300px; }
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        @keyframes resultReveal {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .shaking {
+            animation: shake 0.5s ease 3;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text-dark);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 1000;
+            transition: transform 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+            .container, .chat-container, .profession-card, .share-card {
+                padding: 24px;
+            }
+            .site-header h1 {
+                font-size: 1.8em;
+            }
+            .nav-tab {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            .profession-input-group {
+                flex-direction: column;
+            }
+            .link-box {
+                flex-direction: column;
+            }
+            .chat-container {
+                height: 500px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="layout-grid">
-        <main class="manifesto-panel">
-            <h1>Saaspocalypse</h1>
-            <div class="subtitle">// status: degraded performance // epoch: <span id="clock"></span></div>
-            
-            <p>My name is <strong id="dev-name">Anonymous</strong>. I am a <strong id="dev-title">Software</strong> engineer.</p>
-            
-            <p>And let me tell you: our work is profoundly, hilariously doomed.</p>
 
-            <p>I used to write <span class="dynamic-text" id="dyn-past">artisanal, farm-to-table code</span>. Now I spend 80% of my day reviewing Pull Requests generated by <span class="dynamic-text" id="dyn-present">an AI that apologizes too much</span>, and the other 20% trying to remember why we needed a hyper-scalable microservice for <span class="dynamic-text" id="dyn-future">a "Contact Us" form</span>.</p>
-            
-            <p>The SaaS bubble didn't just pop; it evaporated. The infinite VC funding dried up, the ping-pong tables were repossessed, and we realized we spent a decade building software to optimize the software that manages the software. The snake has officially eaten its own tail.</p>
-            
-            <p>I bought this domain because the golden age is over. And honestly?</p>
-            
-            <p>I have absolutely no idea what I'm going to do when I get older<span class="cursor"></span></p>
-        </main>
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
 
-        <aside class="chat-panel">
-            <div class="chat-header">
-                <div>WORKSPACE_COMMS</div>
-                <span>● LIVE</span>
+<!-- Header -->
+<div class="site-header">
+    <h1>Recipe Hub</h1>
+    <p>Share recipes, get cooking advice & discover your food destiny</p>
+</div>
+
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('recipe')">
+        <span class="tab-icon">&#x1F373;</span> Create Recipe
+    </button>
+    <button class="nav-tab" onclick="switchTab('chat')">
+        <span class="tab-icon">&#x1F468;&#x200D;&#x1F373;</span> Chef Chat
+    </button>
+    <button class="nav-tab" onclick="switchTab('profession')">
+        <span class="tab-icon">&#x1F52E;</span> Food Fortune
+    </button>
+    <button class="nav-tab" onclick="switchTab('share')">
+        <span class="tab-icon">&#x1F517;</span> Share with Friend
+    </button>
+</div>
+
+<!-- ===== RECIPE PANEL ===== -->
+<div class="panel active" id="panel-recipe">
+    <div class="container">
+        <h2>Share Your Recipe</h2>
+        <form id="recipeForm">
+            <div class="form-group">
+                <label for="recipeTitle">Recipe Title</label>
+                <input type="text" id="recipeTitle" name="title" placeholder="e.g., Classic Homemade Lasagna" required>
             </div>
-            <div class="chat-window" id="chat-window">
+
+            <div class="form-group">
+                <label for="recipeDesc">Short Description</label>
+                <textarea id="recipeDesc" name="description" placeholder="Tell us the story behind this dish..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Recipe Photo</label>
+                <div class="image-upload-container" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">&#x1F4F7;</div>
+                    <p>Click to upload a photo of the dish</p>
+                    <input type="file" id="fileInput" name="image" accept="image/*" onchange="previewImage(event)">
+                    <img id="imagePreview" alt="Recipe Preview">
                 </div>
-        </aside>
+            </div>
+
+            <div class="meta-grid">
+                <div class="form-group">
+                    <label>Prep Time (mins)</label>
+                    <input type="number" id="prepTime" name="prepTime" min="0" placeholder="e.g. 20">
+                </div>
+                <div class="form-group">
+                    <label>Cook Time (mins)</label>
+                    <input type="number" id="cookTime" name="cookTime" min="0" placeholder="e.g. 45">
+                </div>
+                <div class="form-group">
+                    <label>Servings</label>
+                    <input type="number" id="servings" name="servings" min="1" placeholder="e.g. 4">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Ingredients</label>
+                <div id="ingredientsList">
+                    <div class="list-item">
+                        <input type="text" name="ingredients[]" placeholder="e.g. 2 cups Flour" required>
+                    </div>
+                </div>
+                <button type="button" class="btn-add" onclick="addIngredient()">+ Add Ingredient</button>
+            </div>
+
+            <div class="form-group">
+                <label>Instructions</label>
+                <div id="instructionsList">
+                    <div class="list-item">
+                        <textarea name="instructions[]" placeholder="Step 1: Preheat the oven..." required></textarea>
+                    </div>
+                </div>
+                <button type="button" class="btn-add" onclick="addInstruction()">+ Add Step</button>
+            </div>
+
+            <button type="submit" class="submit-btn">Publish Recipe</button>
+        </form>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- 1. Base64 URL Parsing ---
-            const hash = window.location.hash.substring(1);
-            if (hash) {
-                try {
-                    const decodedStr = atob(hash);
-                    const parts = decodedStr.split(',');
-                    if (parts.length >= 2) {
-                        document.getElementById('dev-name').textContent = parts[0].trim();
-                        document.getElementById('dev-title').textContent = parts[1].trim();
-                    }
-                } catch (error) {
-                    console.error("Failed to decode the existential dread from the URL.");
-                }
+<!-- ===== CHAT PANEL ===== -->
+<div class="panel" id="panel-chat">
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chef-avatar">&#x1F468;&#x200D;&#x1F373;</div>
+            <div class="chef-info">
+                <h3>Chef Claude</h3>
+                <span>Your personal cooking advisor</span>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="msg-label">Chef Claude</div>
+                Hey there! I'm Chef Claude, your personal cooking advisor. Ask me anything about cooking - substitutions, techniques, meal ideas, or how to save a dish gone wrong. What can I help with today?
+            </div>
+        </div>
+        <div class="chat-quick-actions">
+            <button class="quick-btn" onclick="sendQuickMessage('What can I substitute for eggs in baking?')">Egg substitutes</button>
+            <button class="quick-btn" onclick="sendQuickMessage('How do I fix too salty soup?')">Too salty?</button>
+            <button class="quick-btn" onclick="sendQuickMessage('Give me a quick dinner idea with chicken')">Quick dinner</button>
+            <button class="quick-btn" onclick="sendQuickMessage('What spices go well together?')">Spice combos</button>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ask Chef Claude anything..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+            <button class="chat-send-btn" onclick="sendChatMessage()">&#x27A4;</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PROFESSION PANEL ===== -->
+<div class="panel" id="panel-profession">
+    <div class="profession-container">
+        <div class="profession-card">
+            <div class="crystal-ball" id="crystalBall">&#x1F52E;</div>
+            <h2>The Food Fortune Teller</h2>
+            <p>Enter your favorite dish or ingredient and we'll reveal your destined profession based on your culinary soul. The kitchen never lies...</p>
+            <div class="profession-input-group">
+                <input type="text" id="foodInput" placeholder="Enter your favorite food..." onkeydown="if(event.key==='Enter')predictProfession()">
+                <button class="btn-predict" onclick="predictProfession()">Reveal My Destiny</button>
+            </div>
+            <div style="margin-top: 16px;">
+                <button class="quick-btn" onclick="document.getElementById('foodInput').value='Pizza';predictProfession()" style="border-color: var(--purple); color: var(--purple);">Pizza</button>
+                <button class="quick-btn" onclick="document.getElementById('foodInput').value='Sushi';predictProfession()" style="border-color: var(--purple); color: var(--purple);">Sushi</button>
+                <button class="quick-btn" onclick="document.getElementById('foodInput').value='Chocolate';predictProfession()" style="border-color: var(--purple); color: var(--purple);">Chocolate</button>
+                <button class="quick-btn" onclick="document.getElementById('foodInput').value='Hummus';predictProfession()" style="border-color: var(--purple); color: var(--purple);">Hummus</button>
+            </div>
+        </div>
+        <div class="profession-result" id="professionResult"></div>
+    </div>
+</div>
+
+<!-- ===== SHARE PANEL ===== -->
+<div class="panel" id="panel-share">
+    <div class="share-container">
+        <div class="share-card">
+            <div class="share-icon">&#x1F381;</div>
+            <h2>Share Recipe with a Friend</h2>
+            <p>Create a beautiful recipe link to share with anyone!</p>
+
+            <div class="share-form-group">
+                <label>Recipe Name</label>
+                <input type="text" id="shareTitle" placeholder="e.g., Grandma's Secret Cookies">
+            </div>
+            <div class="share-form-group">
+                <label>Your Name</label>
+                <input type="text" id="shareName" placeholder="e.g., Uri">
+            </div>
+            <div class="share-form-group">
+                <label>Ingredients (one per line)</label>
+                <textarea id="shareIngredients" placeholder="2 cups flour&#10;1 cup sugar&#10;3 eggs"></textarea>
+            </div>
+            <div class="share-form-group">
+                <label>Instructions (one step per line)</label>
+                <textarea id="shareInstructions" placeholder="Mix the dry ingredients&#10;Add the wet ingredients&#10;Bake at 180C for 25 mins"></textarea>
+            </div>
+            <div class="share-form-group" style="display: flex; gap: 12px;">
+                <div style="flex:1;">
+                    <label>Prep Time</label>
+                    <input type="text" id="sharePrep" placeholder="15 mins">
+                </div>
+                <div style="flex:1;">
+                    <label>Cook Time</label>
+                    <input type="text" id="shareCook" placeholder="30 mins">
+                </div>
+                <div style="flex:1;">
+                    <label>Servings</label>
+                    <input type="text" id="shareServings" placeholder="4">
+                </div>
+            </div>
+
+            <button class="btn-generate-link" onclick="generateShareLink()">Generate Share Link</button>
+
+            <div class="share-result" id="shareResult">
+                <div class="link-box">
+                    <input type="text" id="shareLink" readonly>
+                    <button class="btn-copy" onclick="copyLink()">Copy Link</button>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn whatsapp" onclick="shareVia('whatsapp')">&#x1F4AC; WhatsApp</button>
+                    <button class="share-btn telegram" onclick="shareVia('telegram')">&#x2708;&#xFE0F; Telegram</button>
+                    <button class="share-btn email" onclick="shareVia('email')">&#x2709;&#xFE0F; Email</button>
+                    <button class="share-btn twitter" onclick="shareVia('twitter')">&#x1F426; Twitter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SHARED RECIPE VIEW (shown when opening a shared link) ===== -->
+<div class="shared-recipe-view" id="sharedRecipeView">
+    <div class="shared-recipe-card">
+        <div class="shared-recipe-hero">
+            <h2 id="sharedTitle"></h2>
+            <p id="sharedFrom"></p>
+        </div>
+        <div class="shared-recipe-body">
+            <div class="shared-meta" id="sharedMeta"></div>
+            <div class="shared-section">
+                <h3>&#x1F951; Ingredients</h3>
+                <ul id="sharedIngredients"></ul>
+            </div>
+            <div class="shared-section">
+                <h3>&#x1F4DD; Instructions</h3>
+                <ol id="sharedInstructions"></ol>
+            </div>
+        </div>
+        <div class="shared-from">
+            Shared via Recipe Hub
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="btn-predict" style="background: linear-gradient(135deg, var(--primary-color), #ff8e8e);" onclick="closeSharedView()">Create Your Own Recipe</button>
+    </div>
+</div>
+
+<script>
+    // ===== TAB NAVIGATION =====
+    function switchTab(tabName) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('panel-' + tabName).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // ===== TOAST =====
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ===== RECIPE FORM =====
+    function previewImage(event) {
+        const reader = new FileReader();
+        const imageField = document.getElementById("imagePreview");
+        reader.onload = function() {
+            if (reader.readyState === 2) {
+                imageField.src = reader.result;
+                imageField.style.display = "block";
             }
+        }
+        if (event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
 
-            // --- 2. Dynamic Text Randomizer ---
-            const pastTech = [
-                "artisanal, farm-to-table code", 
-                "hand-rolled Webpack configurations", 
-                "bespoke jQuery plugins", 
-                "monolithic PHP scripts",
-                "pixel-perfect CSS floats"
-            ];
-            const presentTech = [
-                "an AI that apologizes too much", 
-                "a YAML file that became sentient", 
-                "14 nested Docker containers", 
-                "a micro-frontend architecture built on lies",
-                "a blockchain trained on my own tears"
-            ];
-            const futureTech = [
-                "a 'Contact Us' form", 
-                "a digital twin of a water cooler", 
-                "an app that disrupts blinking", 
-                "a B2B SaaS for dog walkers",
-                "a serverless lambda that just returns 'true'"
-            ];
+    function addIngredient() {
+        const container = document.getElementById("ingredientsList");
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+            <input type="text" name="ingredients[]" placeholder="e.g. 1 tsp Salt">
+            <button type="button" class="btn-remove" onclick="removeField(this)">Remove</button>
+        `;
+        container.appendChild(div);
+        div.querySelector('input').focus();
+    }
 
-            const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
-            
-            document.getElementById('dyn-past').textContent = randomItem(pastTech);
-            document.getElementById('dyn-present').textContent = randomItem(presentTech);
-            document.getElementById('dyn-future').textContent = randomItem(futureTech);
+    function addInstruction() {
+        const container = document.getElementById("instructionsList");
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+            <textarea name="instructions[]" placeholder="Next step..."></textarea>
+            <button type="button" class="btn-remove" onclick="removeField(this)">Remove</button>
+        `;
+        container.appendChild(div);
+        div.querySelector('textarea').focus();
+    }
 
-            // --- 3. Unhinged Chat Bot ---
-            const chatWindow = document.getElementById('chat-window');
-            const chatMessages = [
-                { type: 'ai', sender: 'AI_CODER_PRO', text: "I apologize, but as an AI, I cannot fix your life choices. Shall I generate a unit test instead?" },
-                { type: 'system', sender: 'CI/CD PIPELINE', text: "Deploying to production... Just kidding. Build failed. Reason: Unknown." },
-                { type: 'jira', sender: 'JIRA_BOT', text: "You have 4,092 unresolved issues in epic 'Make It Pop'." },
-                { type: 'ai', sender: 'AI_CODER_PRO', text: "Have you considered rewriting this entire codebase in Rust?" },
-                { type: 'system', sender: 'DEV_SEC_OPS', text: "CRITICAL: High severity vulnerability found in left-pad (v0.0.1)." },
-                { type: 'ai', sender: 'AI_CODER_PRO', text: "Generating another microservice to handle the payload of the previous microservices..." },
-                { type: 'system', sender: 'SLACK_INTEGRATION', text: "@here Can anyone tell me why the staging environment is literally on fire?" },
-                { type: 'system', sender: 'RUNTIME', text: "Uncaught TypeError: undefined is not a function. Much like your career trajectory." },
-                { type: 'jira', sender: 'PM_BOT', text: "Status update requested: Are we Agile enough yet?" }
-            ];
+    function removeField(button) {
+        button.parentElement.remove();
+    }
 
-            function addChatMessage() {
-                const msgData = randomItem(chatMessages);
-                const msgEl = document.createElement('div');
-                msgEl.className = `chat-msg ${msgData.type}`;
-                msgEl.innerHTML = `<span class="sender">${msgData.sender}</span>${msgData.text}`;
-                
-                chatWindow.appendChild(msgEl);
-                chatWindow.scrollTop = chatWindow.scrollHeight;
+    document.getElementById("recipeForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        // Auto-fill share tab with recipe data
+        const title = document.getElementById('recipeTitle').value;
+        const desc = document.getElementById('recipeDesc').value;
+        if (title) document.getElementById('shareTitle').value = title;
 
-                // Randomize the next message time between 2 to 6 seconds
-                setTimeout(addChatMessage, Math.random() * 4000 + 2000);
-            }
-            
-            // Start the chat after a brief delay
-            setTimeout(addChatMessage, 1500);
+        const ingredients = [...document.querySelectorAll('[name="ingredients[]"]')].map(i => i.value).filter(v => v);
+        if (ingredients.length) document.getElementById('shareIngredients').value = ingredients.join('\n');
 
-            // --- 4. Epoch Clock Update ---
-            setInterval(() => {
-                document.getElementById('clock').textContent = Math.floor(Date.now() / 1000);
-            }, 1000);
+        const instructions = [...document.querySelectorAll('[name="instructions[]"]')].map(i => i.value).filter(v => v);
+        if (instructions.length) document.getElementById('shareInstructions').value = instructions.join('\n');
+
+        const prepTime = document.getElementById('prepTime').value;
+        const cookTime = document.getElementById('cookTime').value;
+        const servings = document.getElementById('servings').value;
+        if (prepTime) document.getElementById('sharePrep').value = prepTime + ' mins';
+        if (cookTime) document.getElementById('shareCook').value = cookTime + ' mins';
+        if (servings) document.getElementById('shareServings').value = servings;
+
+        showToast('Recipe saved! Head to "Share with Friend" to send it.');
+    });
+
+    // ===== CHEF CHAT =====
+    const chefResponses = {
+        substitutes: [
+            "For eggs in baking, try: 1/4 cup applesauce, 1 mashed banana, or 3 tbsp aquafaba (chickpea water) per egg. Each gives slightly different results - banana adds sweetness, applesauce keeps it moist, and aquafaba is the most neutral!",
+            "No buttermilk? Add 1 tablespoon of lemon juice or white vinegar to 1 cup of regular milk. Let it sit for 5 minutes. Magic!",
+            "Out of heavy cream? Mix 2/3 cup whole milk with 1/3 cup melted butter. Not for whipping, but perfect for sauces and baking!",
+            "Need a butter substitute? Coconut oil works 1:1 in most baking recipes and adds a lovely subtle flavor.",
+        ],
+        fix: [
+            "Too salty? Add a peeled potato to your soup/stew and simmer for 15 minutes - it absorbs excess salt. Also try adding a splash of acid (lemon/vinegar) or a pinch of sugar to balance it out!",
+            "Oversweetened a sauce? Add a little acid (lemon juice, vinegar) or a pinch of salt. Both counteract sweetness beautifully.",
+            "Burnt the bottom of your sauce? DON'T stir it! Carefully pour the unburnt portion into a new pot. A tiny bit of peanut butter can mask any remaining smoky taste.",
+            "Sauce too thin? Make a slurry with 1 tbsp cornstarch + 2 tbsp cold water, stir into your sauce, and let it simmer for 2 minutes. Instant thickness!",
+        ],
+        dinner: [
+            "Quick 20-min dinner: One-pan lemon herb chicken! Season chicken thighs with lemon, garlic, rosemary. Sear 5 min per side, throw in cherry tomatoes and olives, finish in a 200C oven for 10 min. Serve with crusty bread!",
+            "Speed dinner: Garlic shrimp pasta! Cook pasta, sautee garlic in olive oil + butter, add shrimp for 3 min, toss with pasta, chili flakes, lemon juice, and fresh parsley. Chef's kiss!",
+            "Lazy but impressive: Shakshuka! Sautee onions + peppers, add canned tomatoes + cumin + paprika, crack eggs in, cover and simmer 8 min. Serve with bread for dipping!",
+            "15-minute stir fry: Slice any veggies and protein you have, high heat wok with sesame oil, add soy sauce + honey + garlic + ginger. Serve over rice. Restaurant quality!",
+        ],
+        spices: [
+            "Classic combos: Cumin + coriander + paprika (Mexican/Middle Eastern), Basil + oregano + thyme (Italian), Ginger + garlic + soy (Asian), Cinnamon + nutmeg + cardamom (baking/Indian).",
+            "Secret weapon combo: Smoked paprika + cumin + a tiny bit of cinnamon. It makes everything taste complex and mysterious. Works on roasted veggies, meats, soups!",
+            "For grilling: mix garlic powder, onion powder, smoked paprika, brown sugar, and black pepper. This all-purpose rub works on literally everything.",
+            "Pro tip: Toast your whole spices in a dry pan for 1-2 minutes before grinding. The flavor difference is night and day!",
+        ],
+        general: [
+            "Great question! Here's a chef's tip: always taste as you cook. Seasoning at every stage builds layers of flavor that you can't achieve at the end alone.",
+            "Fun cooking hack: freeze leftover herbs in olive oil using an ice cube tray. Pop one out whenever you need an instant flavor bomb for any dish!",
+            "Remember: a sharp knife is actually safer than a dull one. It goes where you want it to, while a dull knife slips. Keep those knives sharp!",
+            "The secret to restaurant-quality food? Salt, fat, acid, and heat - in the right balance. Season boldly, use good oil/butter, add a squeeze of citrus, and don't be afraid of high heat!",
+            "Mise en place isn't just a fancy French term - prepping and measuring all ingredients before cooking will transform your kitchen experience. No more burning things while frantically chopping!",
+            "Here's something most people don't know: you should let meat rest after cooking for about half the time it cooked. The juices redistribute and the result is night and day!",
+            "Want fluffy rice every time? Rinse it 3 times until water runs clear, use a 1:1.5 ratio (rice to water), bring to boil, then lowest heat with lid on for 15 min. Don't peek!",
+        ]
+    };
+
+    function getChefResponse(message) {
+        const lower = message.toLowerCase();
+        if (lower.includes('substitut') || lower.includes('replace') || lower.includes('instead of') || lower.includes('alternative')) {
+            return chefResponses.substitutes[Math.floor(Math.random() * chefResponses.substitutes.length)];
+        }
+        if (lower.includes('fix') || lower.includes('too salty') || lower.includes('too sweet') || lower.includes('burnt') || lower.includes('thin') || lower.includes('thick') || lower.includes('save') || lower.includes('overcooked')) {
+            return chefResponses.fix[Math.floor(Math.random() * chefResponses.fix.length)];
+        }
+        if (lower.includes('dinner') || lower.includes('lunch') || lower.includes('quick') || lower.includes('idea') || lower.includes('what should') || lower.includes('suggest') || lower.includes('recipe')) {
+            return chefResponses.dinner[Math.floor(Math.random() * chefResponses.dinner.length)];
+        }
+        if (lower.includes('spice') || lower.includes('season') || lower.includes('herb') || lower.includes('flavor')) {
+            return chefResponses.spices[Math.floor(Math.random() * chefResponses.spices.length)];
+        }
+        return chefResponses.general[Math.floor(Math.random() * chefResponses.general.length)];
+    }
+
+    function addChatMessage(text, isUser) {
+        const container = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = 'message ' + (isUser ? 'user' : 'bot');
+        if (!isUser) {
+            div.innerHTML = '<div class="msg-label">Chef Claude</div>' + text;
+        } else {
+            div.textContent = text;
+        }
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function showTyping() {
+        const container = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = 'typing-indicator';
+        div.id = 'typingIndicator';
+        div.innerHTML = '<span></span><span></span><span></span>';
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function removeTyping() {
+        const el = document.getElementById('typingIndicator');
+        if (el) el.remove();
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+        addChatMessage(text, true);
+        input.value = '';
+        showTyping();
+        const delay = 800 + Math.random() * 1200;
+        setTimeout(() => {
+            removeTyping();
+            addChatMessage(getChefResponse(text), false);
+        }, delay);
+    }
+
+    function sendQuickMessage(text) {
+        document.getElementById('chatInput').value = text;
+        sendChatMessage();
+    }
+
+    // ===== PROFESSION PREDICTOR =====
+    const professions = [
+        { title: "Space Chef on Mars", emoji: "&#x1F680;", desc: "Your taste is literally out of this world. NASA has a spot for you designing meals for astronauts. Zero-gravity cooking is your destiny!", salary: "$180K", match: "97%", years: "2028" },
+        { title: "Secret Agent Pastry Chef", emoji: "&#x1F575;&#xFE0F;", desc: "MI6 needs someone who can make a souffle AND crack codes. Your precision in the kitchen translates perfectly to international espionage.", salary: "$???", match: "94%", years: "Classified" },
+        { title: "Food Influencer Billionaire", emoji: "&#x1F4F1;", desc: "Your food posts will break the internet. Forget tech startups - your mukbang channel will make you the world's first food content billionaire.", salary: "$1.2B", match: "89%", years: "2027" },
+        { title: "Royal Palace Head Chef", emoji: "&#x1F451;", desc: "A European royal family is destined to discover your cooking and offer you the position of a lifetime. State dinners will never be the same.", salary: "$250K + castle", match: "91%", years: "2029" },
+        { title: "Time-Traveling Food Historian", emoji: "&#x23F3;", desc: "Your deep appreciation for flavors will lead you to invent time-travel technology, but only usable for researching ancient recipes. Worth it.", salary: "Priceless", match: "96%", years: "2031" },
+        { title: "Underwater Restaurant Owner", emoji: "&#x1F30A;", desc: "You'll open the world's deepest underwater restaurant. Diners will eat your food while watching sharks swim by. Michelin is giving you 5 stars (they had to invent 2 new ones).", salary: "$500K", match: "88%", years: "2030" },
+        { title: "Professional Food Fight Coordinator", emoji: "&#x1F3AC;", desc: "Hollywood needs you! Your intimate knowledge of food aerodynamics and splatter patterns makes you the go-to person for food fight scenes.", salary: "$300K", match: "92%", years: "2027" },
+        { title: "AI Taste Consultant", emoji: "&#x1F916;", desc: "Tech companies will pay you absurd amounts to teach AI what 'delicious' means. Spoiler: the robots still can't make hummus as good as yours.", salary: "$400K", match: "95%", years: "2026" },
+        { title: "Volcano BBQ Pitmaster", emoji: "&#x1F30B;", desc: "You'll pioneer the art of cooking over active volcanic vents. Extreme? Yes. Delicious? Incredibly. Insurance premiums? Don't ask.", salary: "$200K + danger pay", match: "87%", years: "2029" },
+        { title: "Intergalactic Food Diplomat", emoji: "&#x1F30D;", desc: "When aliens finally arrive, YOU will be chosen to represent Earth's cuisine. Your shakshuka will prevent an interstellar war. No pressure.", salary: "1M galactic credits", match: "99%", years: "2035" },
+        { title: "Competitive Eating Coach", emoji: "&#x1F3C6;", desc: "Your understanding of food will lead you to coach the world champion competitive eater. Your motivational speech: 'Just one more bite' moves millions.", salary: "$150K", match: "86%", years: "2027" },
+        { title: "Edible Architecture Designer", emoji: "&#x1F3D7;&#xFE0F;", desc: "Forget regular buildings. You'll design structures entirely from food. Your chocolate skyscraper in Dubai will be a wonder of the modern world.", salary: "$600K", match: "93%", years: "2032" },
+    ];
+
+    function predictProfession() {
+        const food = document.getElementById('foodInput').value.trim();
+        if (!food) {
+            showToast('Enter a food to reveal your destiny!');
+            return;
+        }
+
+        const ball = document.getElementById('crystalBall');
+        ball.classList.add('shaking');
+        setTimeout(() => ball.classList.remove('shaking'), 1500);
+
+        // "Calculate" profession based on food name hash
+        let hash = 0;
+        for (let i = 0; i < food.length; i++) {
+            hash = ((hash << 5) - hash) + food.charCodeAt(i);
+            hash = hash & hash;
+        }
+        const profession = professions[Math.abs(hash) % professions.length];
+
+        setTimeout(() => {
+            const resultDiv = document.getElementById('professionResult');
+            resultDiv.innerHTML = `
+                <div class="result-emoji">${profession.emoji}</div>
+                <div class="result-title">${profession.title}</div>
+                <div class="result-description">Based on your love of <strong>${food}</strong>: ${profession.desc}</div>
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">${profession.match}</div>
+                        <div class="stat-label">Match Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${profession.salary}</div>
+                        <div class="stat-label">Expected Salary</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${profession.years}</div>
+                        <div class="stat-label">Starting Year</div>
+                    </div>
+                </div>
+                <button class="btn-retry" onclick="retryProfession()">Try Another Food</button>
+            `;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1500);
+    }
+
+    function retryProfession() {
+        document.getElementById('foodInput').value = '';
+        document.getElementById('foodInput').focus();
+        document.getElementById('professionResult').style.display = 'none';
+    }
+
+    // ===== SHARE LINK =====
+    function generateShareLink() {
+        const title = document.getElementById('shareTitle').value.trim();
+        const name = document.getElementById('shareName').value.trim();
+        const ingredients = document.getElementById('shareIngredients').value.trim();
+        const instructions = document.getElementById('shareInstructions').value.trim();
+        const prep = document.getElementById('sharePrep').value.trim();
+        const cook = document.getElementById('shareCook').value.trim();
+        const servings = document.getElementById('shareServings').value.trim();
+
+        if (!title) {
+            showToast('Please enter at least a recipe name!');
+            return;
+        }
+
+        const data = { t: title, n: name, i: ingredients, s: instructions, p: prep, c: cook, sv: servings };
+        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        const url = window.location.origin + window.location.pathname + '#recipe=' + encoded;
+
+        document.getElementById('shareLink').value = url;
+        document.getElementById('shareResult').style.display = 'block';
+        document.getElementById('shareResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function copyLink() {
+        const linkInput = document.getElementById('shareLink');
+        linkInput.select();
+        navigator.clipboard.writeText(linkInput.value).then(() => {
+            const btn = document.querySelector('.btn-copy');
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            showToast('Link copied to clipboard!');
+            setTimeout(() => {
+                btn.textContent = 'Copy Link';
+                btn.classList.remove('copied');
+            }, 2000);
         });
-    </script>
+    }
+
+    function shareVia(platform) {
+        const url = document.getElementById('shareLink').value;
+        const title = document.getElementById('shareTitle').value;
+        const text = `Check out this recipe: ${title}`;
+
+        switch (platform) {
+            case 'whatsapp':
+                window.open(`https://wa.me/?text=${encodeURIComponent(text + '\n' + url)}`, '_blank');
+                break;
+            case 'telegram':
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+                break;
+            case 'email':
+                window.open(`mailto:?subject=${encodeURIComponent('Recipe: ' + title)}&body=${encodeURIComponent(text + '\n\n' + url)}`, '_blank');
+                break;
+            case 'twitter':
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+                break;
+        }
+    }
+
+    // ===== LOAD SHARED RECIPE FROM URL =====
+    function checkForSharedRecipe() {
+        const hash = window.location.hash;
+        if (hash.startsWith('#recipe=')) {
+            try {
+                const encoded = hash.substring(8);
+                const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+
+                // Hide main UI, show shared recipe
+                document.querySelector('.site-header').style.display = 'none';
+                document.querySelector('.nav-tabs').style.display = 'none';
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('sharedRecipeView').style.display = 'block';
+
+                document.getElementById('sharedTitle').textContent = data.t || 'Untitled Recipe';
+                document.getElementById('sharedFrom').textContent = data.n ? `Shared by ${data.n}` : 'Shared via Recipe Hub';
+
+                // Meta info
+                const metaDiv = document.getElementById('sharedMeta');
+                metaDiv.innerHTML = '';
+                if (data.p) metaDiv.innerHTML += `<div class="shared-meta-item"><div class="value">${data.p}</div><div class="label">Prep Time</div></div>`;
+                if (data.c) metaDiv.innerHTML += `<div class="shared-meta-item"><div class="value">${data.c}</div><div class="label">Cook Time</div></div>`;
+                if (data.sv) metaDiv.innerHTML += `<div class="shared-meta-item"><div class="value">${data.sv}</div><div class="label">Servings</div></div>`;
+
+                // Ingredients
+                const ingredList = document.getElementById('sharedIngredients');
+                ingredList.innerHTML = '';
+                if (data.i) {
+                    data.i.split('\n').filter(l => l.trim()).forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.trim();
+                        ingredList.appendChild(li);
+                    });
+                }
+
+                // Instructions
+                const instrList = document.getElementById('sharedInstructions');
+                instrList.innerHTML = '';
+                if (data.s) {
+                    data.s.split('\n').filter(l => l.trim()).forEach(step => {
+                        const li = document.createElement('li');
+                        li.textContent = step.trim();
+                        instrList.appendChild(li);
+                    });
+                }
+            } catch (e) {
+                console.error('Failed to parse shared recipe:', e);
+            }
+        }
+    }
+
+    function closeSharedView() {
+        window.location.hash = '';
+        document.getElementById('sharedRecipeView').style.display = 'none';
+        document.querySelector('.site-header').style.display = '';
+        document.querySelector('.nav-tabs').style.display = '';
+        document.getElementById('panel-recipe').classList.add('active');
+    }
+
+    // Check on page load
+    checkForSharedRecipe();
+    window.addEventListener('hashchange', checkForSharedRecipe);
+</script>
+
 </body>
 </html>
